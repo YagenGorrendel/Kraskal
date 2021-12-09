@@ -4,6 +4,7 @@ import time
 import matplotlib.pyplot as plt
 collection = []
 dictionary = {}
+big_list = []
 
 
 def rewriting_collection(n):
@@ -14,13 +15,17 @@ def rewriting_collection(n):
 
 
 def generate_edges(n, m, q, r):
+    global big_list
     out_list = []
 
-    for x in range(n):
-        for y in range(x + 1, n):
-            out_list.append([x, y])
+    if n == 10001:
+        out_list = big_list.copy()
+    else:
+        for x in range(n):
+            for y in range(x + 1, n):
+                out_list.append([x, y])
 
-    m = min(m, n**2 - n)
+    m = min(m, (n**2 - n) // 2)
     out_list = random.sample(out_list, m)
 
     for x in range(len(out_list)):
@@ -118,6 +123,7 @@ def finding_way(num_edges):
 
 
 def test_1():
+    print('ruinning test 1')
     #Вариант с n^2/10
     n = 1
     q = 1
@@ -126,7 +132,7 @@ def test_1():
     T2 = []
     n_list = []
 
-    while n < 10002:
+    while n < 1002:
         m = n ** 2 // 10
         print(n)
 
@@ -162,8 +168,8 @@ def test_1():
     T2 = []
     n_list = []
 
-    while n < 10002:
-        m = n ** 2
+    while n < 1002:
+        m = int(1 + (0.45 + random.random() / 20) * n ** 2)
         print(n)
 
         rewriting_collection(n)
@@ -191,6 +197,7 @@ def test_1():
 
 
 def test_2():
+    print('ruinning test 2')
     #Вариант с 100n
     n = 101
     q = 1
@@ -273,7 +280,7 @@ def test_3():
     T2 = []
     m_list = []
 
-    while m < 10000001:
+    while m < 1000001:
         print(m)
 
         rewriting_collection(n)
@@ -301,6 +308,7 @@ def test_3():
 
 
 def test_4():
+    print('ruinning test 4')
     #Вариант с r, m = n^2
     n = 10001
     q = 1
@@ -309,22 +317,25 @@ def test_4():
     T2 = []
     r_list = []
 
-    while r < 201:
-        m = n ** 2
+    while r < 21:
+        m = int(1 + (0.45 + random.random() / 20) * n ** 2)
         print(r)
 
         rewriting_collection(n)
         list_1 = generate_edges(n, m, q, r)
         quick_sort(list_1)
+        print(r)
 
         start = time.time()
         void = finding_way_comp(list_1)
         T1.append(time.time() - start)
+        print(r)
         
         rewriting_collection(n)
         start = time.time()
         void = finding_way(list_1)
         T2.append(time.time() - start)
+        print(r)
 
         r_list.append(r)
         r += 1
@@ -344,7 +355,7 @@ def test_4():
     T2 = []
     r_list = []
 
-    while r < 201:
+    while r < 21:
         m = 1000 * n
         print(r)
 
@@ -371,9 +382,12 @@ def test_4():
     plt.grid(True)
     plt.show()
 
-
 if __name__ == "__main__":
-    test_1()
+    for x in range(10001):
+        for y in range(x + 1, 10001):
+            big_list.append([x, y])
+
+    #test_1()
     test_2()
-    test_3()
-    test_4()
+    #test_3()
+    #test_4()
